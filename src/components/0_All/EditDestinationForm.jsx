@@ -6,12 +6,15 @@ import { Separator } from "@/components/ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Textarea } from "../ui/textarea";
 
-const EditDestinationForm = ({editDestination, }) => {
+const EditDestinationForm = ({editDestination, initialData}) => {
+    const {destinationName, country, category, price, duration, departureDate, imageURL, description} = initialData ?? {};
+    
     const handleSubmit = (e) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         editDestination(formData, "destinations");
     }
+    
     return (
     <div className="flex items-center justify-center p-10 shadow-md rounded-md bg-background/50">
       <div className="sm:mx-auto sm:max-w-2xl">
@@ -35,6 +38,7 @@ const EditDestinationForm = ({editDestination, }) => {
                   name="destinationName"
                   autoComplete="destination-name"
                   placeholder="Type your destination here..."
+                  defaultValue={destinationName}
                   required
                 />
               </Field>
@@ -51,6 +55,7 @@ const EditDestinationForm = ({editDestination, }) => {
                   name="country"
                   autoComplete="country"
                   placeholder="Country name"
+                  defaultValue={country}
                   required
                 />
               </Field>
@@ -61,7 +66,7 @@ const EditDestinationForm = ({editDestination, }) => {
                   Category
                   <span className="text-red-500">*</span>
                 </FieldLabel>
-                <Select name="category" defaultValue="" required>
+                <Select name="category" defaultValue={category} required>
                     <SelectTrigger id="category">
                       <SelectValue placeholder="Select category" />
                     </SelectTrigger>
@@ -88,6 +93,7 @@ const EditDestinationForm = ({editDestination, }) => {
                   name="price"
                   autoComplete="price"
                   placeholder="$"
+                  defaultValue={price}
                   required
                 />
               </Field>
@@ -104,6 +110,7 @@ const EditDestinationForm = ({editDestination, }) => {
                   name="duration"
                   autoComplete="duration"
                   placeholder="e.g., 7 Days/6 Nights"
+                  defaultValue={duration}
                   required
                 />
               </Field>
@@ -120,6 +127,7 @@ const EditDestinationForm = ({editDestination, }) => {
                   name="departureDate"
                   autoComplete="date"
                   placeholder="departureDate"
+                  defaultValue={departureDate}
                   required
                 />
               </Field>
@@ -136,6 +144,7 @@ const EditDestinationForm = ({editDestination, }) => {
                   name="imageURL"
                   autoComplete="imageURL"
                   placeholder="https://example.com/image.jpg"
+                  defaultValue={imageURL}
                   required
                 />
               </Field>
@@ -150,6 +159,7 @@ const EditDestinationForm = ({editDestination, }) => {
                     name="workspace-description"
                     rows={5}
                     placeholder="Describe the travel experience..."
+                    defaultValue={description}
                   />
                   <FieldDescription>
                     Not Mandatory
@@ -157,7 +167,7 @@ const EditDestinationForm = ({editDestination, }) => {
                 </Field>
             </div>
           </div>
-          <Separator className="my-6" />
+          <Separator className="my-6" />Submit
           <div className="flex items-center justify-end space-x-4">
             <Button
               type="button"
@@ -167,7 +177,7 @@ const EditDestinationForm = ({editDestination, }) => {
               Cancel
             </Button>
             <Button type="submit" className="whitespace-nowrap">
-              Submit
+              Confirm Changes
             </Button>
           </div>
         </form>
