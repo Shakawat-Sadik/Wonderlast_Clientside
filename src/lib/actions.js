@@ -30,3 +30,33 @@ export const addDestination = async (submittedForm, ssd) => { // ssd = Server Si
         throw e;
     }
 }
+
+export const editDestination = async (submittedForm, ssd) => {
+    "use server"
+    try {
+        const data = Object.fromEntries(submittedForm.entries);
+        console.log(data); 
+
+        const res = await fetch(`http://localhost:5000/${ssd}`, {
+            method: PATCH,
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
+        
+        if (res.ok) {
+            revalidatePath("/destinations");
+            const destination = await res.json();
+            console.log("Edited Destination:", destination);
+            return destination.then(() =>redirect("/destinations"));
+        } else {
+            throw new Error("Failed to edit destination");
+        }
+        
+    } catch (e) {
+        console.error("Error editing destination:", e);
+        throw e;
+    }
+}

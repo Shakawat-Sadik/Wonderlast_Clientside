@@ -1,4 +1,4 @@
-import BookingForm from "@/components/0_All/BookingForm";
+import AddDestinationForm from "@/components/0_All/AddDestinationForm";
 import { addDestination } from "@/lib/actions";
 
 const AddDestinationPage = () => {
@@ -7,7 +7,7 @@ const AddDestinationPage = () => {
       <div className="w-full">
         <h2 className="text-6xl">Add New Travel Package</h2>
       </div>
-      <BookingForm addDestination={addDestination}/>
+      <AddDestinationForm addDestination={addDestination}/>
     </div>
   );
 };
