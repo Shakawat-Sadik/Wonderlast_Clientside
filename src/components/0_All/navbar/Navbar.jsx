@@ -59,13 +59,13 @@ const Navbar = ({ className }) => {
                 Profile
               </Link>
               <Link
-                href="/login"
+                href="/auth/login"
                 className="text-xl text-accent-foreground font-semibold"
               >
                 Log In
               </Link>
               <Link
-                href="/signup"
+                href="/auth/signup"
                 className="text-xl text-accent-foreground font-semibold"
               >
                 Sign Up

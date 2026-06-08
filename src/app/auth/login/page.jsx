@@ -1,13 +1,12 @@
-import SignUp from '@/components/0_All/Session/Signup';
-import React from 'react';
+import Login from '@/components/0_All/Session/Login';
 
-const SignupPage = () => {
+const LoginPage = () => {
 
     return (
         <div className="flex flex-col gap-8 md:gap-14 lg:gap-22 justify-center items-center flex-1 h-full m-5 md:m-10 lg:m-20">
-            <SignUp />
+            <Login />
         </div>
     );
 };
 
-export default SignupPage;
+export default LoginPage;
