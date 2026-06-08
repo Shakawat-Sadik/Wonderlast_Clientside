@@ -1,5 +1,5 @@
 import EditDestinationForm from "@/components/0_All/EditDestinationForm";
-import { editDestination } from "@/lib/actions";
+import { deleteDestination, editDestination } from "@/lib/actions";
 import React from "react";
 
 const EditDestinationPage = async ({params}) => {
@@ -12,7 +12,7 @@ const EditDestinationPage = async ({params}) => {
       <div className="w-full">
         <h2 className="text-6xl">Edit a Travel Package</h2>
       </div>
-      <EditDestinationForm editDestination={editDestination} initialData={data} />
+      <EditDestinationForm editDestination={editDestination} deleteDestination={deleteDestination} initialData={data} urlPath = {`destinations/${destination}`} />
     </div>
   );
 };

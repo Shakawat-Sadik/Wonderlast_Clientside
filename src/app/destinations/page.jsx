@@ -1,5 +1,5 @@
-import LinkButton from "@/components/smallClient/LinkButton";
-import { Button } from "@/components/ui/button";
+import DeleteButton from "@/components/smallClient/DeleteButton";
+import { LinkButton } from "@/components/smallClient/LinkButton";
 import {
   MorphingDialog,
   MorphingDialogTrigger,
@@ -11,14 +11,13 @@ import {
   MorphingDialogDescription,
   MorphingDialogClose,
 } from "@/components/ui/morphing-dialog";
+import { deleteDestination } from "@/lib/actions";
 import { dateChange } from "@/lib/providers";
-import { TrashIcon } from "lucide-react";
 import { PencilIcon } from "lucide-react";
 import { CalendarRangeIcon } from "lucide-react";
 import { CalendarClockIcon } from "lucide-react";
 import { MapPin } from "lucide-react";
 import { MoveUpRightIcon } from "lucide-react";
-import { redirect } from "next/navigation";
 
 const DestinationsPage = async () => {
     const destinations = await fetch("http://localhost:5000/destinations").then(res => res.json());
@@ -77,9 +76,7 @@ const DestinationsPage = async () => {
                                     <LinkButton route={`/destinations/${_id}/edit-destination`} variant="secondary" className="flex items-center">
                                        <PencilIcon size={8} /> <span>Edit</span>
                                     </LinkButton>
-                                    <LinkButton variant="destructive" className="flex items-center">
-                                       <TrashIcon size={8} /> <span>Delete</span>
-                                    </LinkButton>
+                                    <DeleteButton deleteFunc={deleteDestination} delUrlPath={`destinations/${_id}`} />
                                 </div>
                             </div>
                             </MorphingDialogContent>

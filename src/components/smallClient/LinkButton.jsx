@@ -4,7 +4,7 @@ import Link from "next/link";
 import React from "react";
 import { Button } from "@/components/ui/button";
 
-const LinkButton = ({ children, className, onClick, route, variant }) => {
+const LinkButton = ({ children, className, onClickFunc, route, variant }) => {
   return (
     <Link
       href={route || "/1"}
@@ -13,11 +13,19 @@ const LinkButton = ({ children, className, onClick, route, variant }) => {
         className,
       )}
     >
-      <Button variant={variant} onClick={onClick} className="">
+      <Button variant={variant} onClick={onClickFunc} className="">
         {children}
       </Button>
     </Link>
   );
 };
 
-export default LinkButton;
+const ActionButton = ({ children, className, onClickFunc, variant }) => {
+  return (
+    <Button variant={variant} onClick={onClickFunc} className={cn(`rounded-sm hover:scale-105 transition-transform duration-300`, className)}>
+      {children}
+    </Button>
+  );
+}
+
+export {LinkButton, ActionButton};

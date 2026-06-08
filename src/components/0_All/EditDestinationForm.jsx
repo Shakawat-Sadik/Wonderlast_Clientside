@@ -6,13 +6,13 @@ import { Separator } from "@/components/ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Textarea } from "../ui/textarea";
 
-const EditDestinationForm = ({editDestination, initialData}) => {
+const EditDestinationForm = ({editDestination, initialData, urlPath}) => {
     const {destinationName, country, category, price, duration, departureDate, imageURL, description} = initialData ?? {};
     
     const handleSubmit = (e) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
-        editDestination(formData, "destinations");
+        editDestination(formData, urlPath);
     }
     
     return (

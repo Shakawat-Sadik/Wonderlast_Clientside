@@ -1,7 +1,7 @@
 import React from 'react';
 
-const DestinationPage = ({params}) => {
-    console.log(params)
+const DestinationPage = ({params, editDestination, deleteDestination}) => {
+    console.log(params);
     return (
         <div>
             
