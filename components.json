@@ -22,6 +22,7 @@
     "hooks": "@/hooks"
   },
   "registries": {
-    "@gooseui": "https://gooseui.pro/r/{name}.json"
+    "@gooseui": "https://gooseui.pro/r/{name}.json",
+    "@blocks-so": "https://blocks.so/r/{name}.json"
   }
 }
