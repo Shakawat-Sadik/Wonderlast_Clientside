@@ -1,3 +1,4 @@
+import BookingButton from "@/components/smallClient/BookingButton";
 import DeleteButton from "@/components/smallClient/DeleteButton";
 import { LinkButton } from "@/components/smallClient/LinkButton";
 import {
@@ -11,7 +12,7 @@ import {
   MorphingDialogDescription,
   MorphingDialogClose,
 } from "@/components/ui/morphing-dialog";
-import { deleteDestination } from "@/lib/actions";
+import { addBookingFunc, deleteDestination } from "@/lib/actions";
 import { dateChange } from "@/lib/providers";
 import { PencilIcon } from "lucide-react";
 import { CalendarRangeIcon } from "lucide-react";
@@ -21,6 +22,7 @@ import { MoveUpRightIcon } from "lucide-react";
 
 const DestinationsPage = async () => {
     const destinations = await fetch("http://localhost:5000/destinations").then(res => res.json());
+    const booking = await fetch("http://localhost:5000/bookings").then(res => res.json());
     console.log(destinations);
 
     return (
@@ -45,9 +47,10 @@ const DestinationsPage = async () => {
                                     <span className="font-medium text-2xl mb-0">৳{price}</span><span className="font-light text-sm mt-2">/Person</span>
                                 </div>
                             </div>
-                            <div className="flex items-center uppercase underline text-primary font-semibold ml-3 my-2">
+                            {/* <div className="flex items-center uppercase underline text-primary font-semibold ml-3 my-2">
                                 Book Now <MoveUpRightIcon size={16}/>
-                            </div>
+                            </div> */}
+                            <BookingButton bookingFunc={addBookingFunc} bookUrlPath={_id} />
                         </MorphingDialogTrigger>
 
                         <MorphingDialogContainer>

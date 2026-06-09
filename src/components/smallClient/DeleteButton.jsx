@@ -3,7 +3,6 @@
 import React from "react";
 import { TrashIcon } from "lucide-react";
 import { ActionButton } from "./LinkButton";
-import { redirect } from "next/navigation";
 
 const DeleteButton = ({deleteFunc, delUrlPath}) => {
   const handleDelete = async (urlPath) => {

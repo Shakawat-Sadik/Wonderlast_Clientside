@@ -3,6 +3,7 @@ import "./globals.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Navbar from "@/components/0_All/navbar/Navbar";
 import Footer from "@/components/0_All/footer/Footer";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,6 +31,7 @@ export default function RootLayout({ children }) {
           <Navbar className="" />
           <main className="flex min-h-0 flex-1 flex-col">{children}</main>
           <Footer />
+          <Toaster />
         </TooltipProvider>
       </body>
     </html>

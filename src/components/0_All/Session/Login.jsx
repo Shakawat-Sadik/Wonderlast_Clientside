@@ -5,6 +5,14 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Eye } from "lucide-react";
 import { EyeClosed } from "lucide-react";
+import Loading from "../loading-ui/twin-orbit";
+import { eliteDateFormat } from "@/lib/providers";
+import { toast } from "sonner";
+import React from "react";
+import { authClient } from "@/lib/auth-client";
+import { redirect, useRouter } from "next/navigation";
+import { Trash } from "lucide-react";
+import { sonnerFunctionality } from "@/lib/toastFunction";
 
 const GoogleIcon = (props) => (
   <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
@@ -13,26 +21,83 @@ const GoogleIcon = (props) => (
 );
 
 export default function Login() {
+  const { data: uSession, isPending} = authClient.useSession();
+  const route = useRouter();
+  const [isLoading, setIsLoading] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
 
   const handlePassView = () => {
     setShowPassword((prev) => !prev);
   };
 
+  const handleGoLogin = async (e) => {
+    const {data, error} = authClient.signIn.social(
+      {
+        provider: "google",
+        callbackURL: "/",
+      },
+      {
+        onRequest: () => {
+          setIsLoading(true);
+          //   div.absolute.bg-background
+        },
+        onSuccess: () => {
+          setIsLoading(false);
+          console.log("Session data:", uSession); // Log the session data for debugging
+          route?.back()
+          // router.push("/");
+        },
+        onError: (ctx) => {
+          setIsLoading(false);
+          toast.error(`Failed to login, please try again (Issue: ${ctx.error.message})`, sonnerFunctionality())
+        },
+      },
+    );
+
+    console.log( `data: ${data}, error: ${error}` );
+  }
+
   const handleForm = async (e) => {
+    const { data: uSession, isPending} = authClient.useSession();
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const { email, password } = Object.fromEntries(formData.entries());
 
-    const { data, error } = await authClient.signIn.email({
-      email,
-      password,
-      rememberMe: true,
-    });
+    const { data, error } = await authClient.signIn.email(
+      {
+        email,
+        password,
+        rememberMe: true,
+      },
+      {
+        onRequest: (ctx) => {
+          setIsLoading(true); // Set loading state to true when the request starts
+          <Loading />; //show loading
+        },
+        onSuccess: (ctx) => {
+          setIsLoading(false); // Set loading state to false when the request is successful
+          //redirect to the dashboard or sign in page
+          toast.success("Logged in successfully!", sonnerFunctionality());
+          console.log("Session data:", uSession); // Log the session data for debugging
+          route.back() || route.push("/");
+        },
+        onError: (ctx) => {
+          setIsLoading(false); // Set loading state to false when the request fails
+          // display the error message
+          toast.error(`Failed to login, please try again (Issue: ${ctx.error.message})`, sonnerFunctionality())
+        },
+      },
+    );
   };
 
   return (
-    <div className="flex items-center justify-center min-h-dvh">
+    <div className="flex items-center justify-center">
+      {isLoading && (
+        <div className="bg-primary/50 size-full fixed top-0 left-0 flex items-center justify-center z-50">
+          <Loading className="" />
+        </div>
+      )}
+
       <div className="flex flex-1 flex-col justify-center px-4 py-10 lg:px-6">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <h2 className="text-balance text-center text-xl font-semibold text-foreground">
@@ -99,14 +164,12 @@ export default function Login() {
           </div>
 
           <Button
+            onClick={handleGoLogin}
             variant="outline"
             className="flex w-full items-center justify-center space-x-2 py-2"
-            asChild
           >
-            <a href="#">
               <GoogleIcon className="size-5" aria-hidden={true} />
               <span className="text-sm font-medium">Sign in with Google</span>
-            </a>
           </Button>
 
           <p className="text-pretty mt-4 text-xs text-muted-foreground dark:text-muted-foreground">
@@ -120,6 +183,8 @@ export default function Login() {
             </a>
             .
           </p>
+
+          <Button onClick={() => toast.success("This is a success message!", sonnerFunctionality())}>Sonner</Button>
         </div>
       </div>
     </div>

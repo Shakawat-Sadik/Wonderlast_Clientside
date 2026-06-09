@@ -23,8 +23,6 @@ export const addDestination = async (submittedForm, ssd) => { // ssd = Server Si
             revalidatePath("/destinations");
             redirect("/destinations");
         }
-
-        return destination;
     } catch (e) {
         console.error("Error adding destination:", e);
         throw e;
@@ -83,6 +81,32 @@ export const deleteDestination = async (urlPath) => {
 
     } catch(e) {
         console.warn("Delete functionality is not implemented yet.", e);
+        throw e;
+    }
+}
+
+export const addBookingFunc = async (bookUrlPath) => {
+    "use server"
+    try {
+        const data = await fetch(`http://localhost:5000/destinations/${bookUrlPath}`).then(res => res.json());
+        console.log("Booking Data:", data);
+        // const res = await fetch(`http://localhost:5000/bookings`, {
+        //     method: "POST",
+        //     headers: {
+        //         "Content-Type": "application/json"
+        //     },
+        //     body: JSON.stringify(data)
+        // });
+
+        // if(res.ok){
+        //     const bookingData = await res.json();
+        //     console.log("Booking Response:", bookingData);
+        // } else {
+        //     throw new Error("Failed to book the destination", data);
+        // }
+
+    } catch (e) {
+        console.warn("Booking functionality couldn't be rendered properly.", e);
         throw e;
     }
 }

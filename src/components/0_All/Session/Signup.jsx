@@ -9,6 +9,8 @@ import { Label } from "@/components/ui/label";
 import { Eye } from "lucide-react";
 import { EyeClosed } from "lucide-react";
 import Loading from "../loading-ui/twin-orbit";
+import { sonnerFunctionality } from "@/lib/toastFunction";
+import { toast } from "sonner";
 
 const Logo = (props) => (
   <svg
@@ -33,6 +35,7 @@ const Logo = (props) => (
 );
 
 export default function SignUp() {
+  const [isLoading, setIsLoading] = React.useState(false);  
   const [showPassword, setShowPassword] = React.useState(false);
 
   const handlePassView = () => {
@@ -62,15 +65,20 @@ export default function SignUp() {
       },
       {
         onRequest: (ctx) => {
+          setIsLoading(true); // Set loading state to true when the request starts
           <Loading />; //show loading
         },
         onSuccess: (ctx) => {
+          setIsLoading(false); // Set loading state to false when the request is successful
           //redirect to the dashboard or sign in page
+          toast.success("Signed up successfully!", sonnerFunctionality());
           redirect("/");
         },
         onError: (ctx) => {
+          setIsLoading(false); // Set loading state to false when the request fails
           // display the error message
           alert(ctx.error.message);
+          toast.error(`Failed to sign up, please try again (Issue: ${ctx.error.message})`, sonnerFunctionality())
         },
       },
     );
@@ -80,6 +88,11 @@ export default function SignUp() {
 
   return (
     <div className="flex items-center justify-center">
+      {
+        isLoading && <div className="bg-primary/50 size-full fixed top-0 left-0 flex items-center justify-center z-50">
+          <Loading className="size-1/10" />
+        </div>
+      }
       <div className="flex flex-1 flex-col justify-center px-4 py-10 lg:px-6">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <Logo

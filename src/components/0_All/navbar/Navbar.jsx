@@ -6,9 +6,30 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import logo from "@/assets/Wanderlast.png";
 import Image from "next/image";
-// import SessionState from "./Navbar/Session_topright";
+import { authClient } from "@/lib/auth-client";
+import Loading from "../loading-ui/twin-orbit";
+import { useRouter } from "next/navigation";
+import { ActionButton } from "@/components/smallClient/LinkButton";
 
 const Navbar = ({ className }) => {
+  const { data: uSession, isPending } = authClient.useSession();
+  console.log(uSession);
+
+  const route = useRouter();
+
+  const handleLogOut = async () => {
+    const { data, error } = await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          route.push("/auth/login"); // redirect to login page
+        },
+      },
+    });
+
+    data ? toast.success("Logged out successfully!", sonnerFunctionality) : toast.error("Failed to log out, please try again", sonnerFunctionality);
+
+    console.log(`data: ${data}, error: ${error}`); // Log the response for debugging
+  };
   return (
     <div
       className={cn(
@@ -50,28 +71,47 @@ const Navbar = ({ className }) => {
             </nav>
           </div>
 
-          <div className="flex w-full items-center justify-center md:w-auto md:justify-end">
-            <nav className="hidden md:flex space-x-4">
-              <Link
-                href="/profile"
-                className="text-xl text-accent-foreground font-semibold"
-              >
-                Profile
-              </Link>
-              <Link
-                href="/auth/login"
-                className="text-xl text-accent-foreground font-semibold"
-              >
-                Log In
-              </Link>
-              <Link
-                href="/auth/signup"
-                className="text-xl text-accent-foreground font-semibold"
-              >
-                Sign Up
-              </Link>
-            </nav>
-          </div>
+          {isPending ? (
+            <div className="flex w-full items-center justify-center md:w-auto md:justify-center aspect-square rounded-full">
+              <Loading className="size-1 text-primary" />
+            </div>
+          ) : uSession ? (
+            <div className="flex w-full items-center justify-center md:w-auto md:justify-end">
+              <nav className="hidden md:flex items-center space-x-4">
+                <Link
+                  href="/profile"
+                  className="text-xl text-chart-1 bg-primary/80 font-semibold size-10 p-2 border border-primary flex justify-center items-center rounded-full"
+                >
+                  {!uSession.user.image && uSession.user.name
+                    ? uSession.user.name.slice(0, 2).toUpperCase()
+                    : "U"}
+                </Link>
+                <ActionButton
+                  onClickFunc={handleLogOut}
+                  className="text-xl text-accent-foreground font-semibold"
+                >
+                  Log Out
+                </ActionButton>
+              </nav>
+            </div>
+          ) : (
+            <div className="flex w-full items-center justify-center md:w-auto md:justify-end">
+              <nav className="hidden md:flex space-x-4">
+                <Link
+                  href="/auth/login"
+                  className="text-xl text-accent-foreground font-semibold"
+                >
+                  Log In
+                </Link>
+                <Link
+                  href="/auth/signup"
+                  className="text-xl text-accent-foreground font-semibold"
+                >
+                  Sign Up
+                </Link>
+              </nav>
+            </div>
+          )}
           <nav className="flex flex-wrap justify-center gap-4 text-sm md:hidden">
             <Link
               href="/"

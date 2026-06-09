@@ -9,11 +9,20 @@ const auth = betterAuth({
   emailAndPassword: {
     enabled: true
   },
-  SocialProviders: {
+  account: {
+    accountLinking: {
+      trustedProviders: ["google"],
+      requireLocalEmailVerified: false,
+    },
+  },
+  socialProviders: {
     google: {
-        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientId: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET
     }
+  },
+  session: {
+    disableSessionRefresh: true,
   },
   database: mongodbAdapter(db, {
     // Optional: if you don't provide a client, database transactions won't be enabled.
