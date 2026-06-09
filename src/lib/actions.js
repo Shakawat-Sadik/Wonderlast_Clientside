@@ -87,26 +87,44 @@ export const deleteDestination = async (urlPath) => {
 
 export const addBookingFunc = async (bookUrlPath) => {
     "use server"
+    console.log(bookUrlPath);
     try {
         const data = await fetch(`http://localhost:5000/destinations/${bookUrlPath}`).then(res => res.json());
         console.log("Booking Data:", data);
-        // const res = await fetch(`http://localhost:5000/bookings`, {
-        //     method: "POST",
-        //     headers: {
-        //         "Content-Type": "application/json"
-        //     },
-        //     body: JSON.stringify(data)
-        // });
+        const res = await fetch(`http://localhost:5000/bookings`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
 
-        // if(res.ok){
-        //     const bookingData = await res.json();
-        //     console.log("Booking Response:", bookingData);
-        // } else {
-        //     throw new Error("Failed to book the destination", data);
-        // }
+        if(res.ok){
+            const bookingData = await res.json();
+            console.log("Booking Response:", bookingData);
+            const response = {
+                success: true,
+                status: res.status,
+                data: bookingData
+            }
+            return response;
+        }
+        else {
+            const response = {
+                success: false,
+                status: res.status,
+                error: "Failed to book the destination"
+            }
+            return response;
+        }
 
     } catch (e) {
-        console.warn("Booking functionality couldn't be rendered properly.", e);
+        const response = {
+            success: false,
+            status: res?.status || 500,
+            error: e.message
+        };
+        console.warn(response);
         throw e;
     }
 }

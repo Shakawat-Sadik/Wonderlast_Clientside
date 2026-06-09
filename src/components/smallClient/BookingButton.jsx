@@ -7,10 +7,12 @@ const BookingButton = ({bookingFunc, bookUrlPath}) => {
   const handleBooking = async (urlPath) => {
       try {
           const res = await bookingFunc(urlPath);
-          console.log("Booking Response:", urlPath, res);
-          if (res.ok) {
-              console.log(`Destination Booked successfully. Response:${res.status} ${res.statusText}`);
+          console.log("Booking Response:", res);
+          if (res?.success) {
+              console.log(`Destination Booked successfully. Response:${res?.status} ${res?.data}`);
               // redirect(route); --- IGNORE ---
+          } else {
+            console.warn(`Failed to book the destination. Error: ${res?.error}`);
           }
       } catch (e) {
           console.error("Error in handleBooking:", e);
